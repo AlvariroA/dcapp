@@ -106,11 +106,83 @@ class Sponsor(PersonBase):
     fecha_vencimiento: str=Field(
         ...,
         example="22/04/2022"
-    )    
+    )
     
-@app.get("/",status_code=status.HTTP_200_OK)
+class LoginOut(BaseModel):
+    username: str=Form(
+        ...,
+        min_length=3,
+        max_length=20,
+        example="adavila59"
+    )
+    password: SecretStr=Form(
+        ...,
+        min_length=6,
+    )
+    message : str=Field(
+        default="Success"
+    )        
+    
+@app.get("/",status_code=status.HTTP_200_OK,tags=["Mensaje"],
+          summary="Logeo de un usuario")
 def home():
     return {"Bienvenido":"DCAPP"}
 
 
-####Metodos
+######Metodos######
+
+#Crear nuevo usuario
+@app.post(path="/registro/new",
+          status_code=status.HTTP_201_CREATED,
+          tags=["Users"],
+          summary="Logeo de un usuario")
+def new_person(person:Usuario=Body(...)):
+    return person
+
+
+
+#Login
+@app.post(path="/login", 
+          status_code=status.HTTP_200_OK, 
+          response_model=LoginOut,
+          tags=["Users"],
+          summary="Logeo de un usuario")
+def Login(
+#Inicio de Secion
+    username:str = Form(...),
+    password:str = Form(...)
+):
+    return LoginOut(username=username, password=password)
+
+
+#Help
+
+##USUARIOS
+
+#ver usuario
+
+#ver meta
+
+#ver lugar de reciclaje
+
+#ver reciclaje
+
+#puntos 
+
+
+
+
+
+##ADMINISTRADOR##
+
+#ver Administrador
+
+#listar USUARIOS
+
+#listar ecopuntos
+
+#info ecopunto
+
+#agregar nuevo ecopunto
+
+#listar mensajes
