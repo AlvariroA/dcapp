@@ -73,8 +73,44 @@ class PersonBase(BaseModel):
         example = "xxxxxxxxx"
     )
     telefono:str=Field(...)
+
+
+class Administrador(PersonBase):
+    codigo_administador: int=Field(
+        ...,
+        gt=0,
+        example="001")
+    emailDcapp: EmailStr=Field(
+        ...,
+        example="admin@dcapp.com"
+    )
     
+class Usuario(PersonBase):
+    codigo_usuario: int=Field(
+        ...,
+        gt=0,
+        example="U-001")
+    
+    puntos:int=Field(
+        ...,
+        gt=0,
+        example="100"
+    )
+    estado_app:bool=Field(default=False)
+    
+class Sponsor(PersonBase):
+    codigo_sponsor: int=Field(
+        ...,
+        gt=0,
+        example="001")
+    fecha_vencimiento: str=Field(
+        ...,
+        example="22/04/2022"
+    )    
     
 @app.get("/",status_code=status.HTTP_200_OK)
 def home():
     return {"Bienvenido":"DCAPP"}
+
+
+####Metodos
