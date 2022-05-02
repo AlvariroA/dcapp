@@ -1,10 +1,12 @@
 # Titulo: Prototipo De Una Aplicación Web Para El Almacenamiento De Información Sobre La Gestión De Residuos Electrónicos En La Localidad De Chapinero
 ---
 ## Overview: Problema a resolver
-Descripción..
+Este proyecto nace frente a la problemática actual en Bogotá "la falta de información confiable sobre la cantidad de desechos electrónicos que no son reutilizados",  los datos que se tienen son dados a conocer por fuentes poco confiables, las cuales se basan en entrevistas o aproximando datos y en muchos casos brindado información errónea o muy aproximada.
+ 
+Además “en Bogotá existe una deficiente participación de los ciudadanos para separar en la fuente, una tarea indispensable para que sea posible recuperar mayores cantidades de residuos. La administración debe hacer esfuerzos para mejorar la información disponible pues la meta en el Plan de Desarrollo es lograr reducir 30% los residuos dispuestos en el relleno sanitario, pero los ciudadanos pueden empezar por tener bolsas diferenciadas en casa y hacer un esfuerzo por poner en la blanca material que se pueda recuperar y en la negra lo que debe ir a la caneca ( Bogotá Cómo Vamos, 2020)”.
 
 ### Alcance(Scope)
-Descripción..
+Brindar a los habitantes de Bogotá una base de datos sólida para la construcción de futuros proyectos, con datos fiables y comprensibles para los usuarios.
 
 #### Casos de uso
 * Caso de uso 1 - Registrar Usuario
@@ -17,7 +19,7 @@ Una vez realizado el registro se enviará un correo de confirmación el cual le 
 
 
 Persona --> (Diligenciar Datos)
-(Diligenciar Datos) -> (Validar Información) :include
+(Diligenciar Datos) .> (Validar Información) :include
 
 @enduml
 ```
@@ -30,8 +32,8 @@ Descripción: El usuario podrá visualizar la cantidad de puntos que posee, van 
 Usuario --> (Consultar reciclaje almacenado ) 
 Administrador --> (Consultar reciclaje almacenado) 
     
-(Consultar reciclaje almacenado) -> (Listar Usuario) :include
-(Consultar reciclaje almacenado) -> (Seleccionar Usuario) :include
+(Consultar reciclaje almacenado) .> (Listar Usuario) :include
+(Consultar reciclaje almacenado) .> (Seleccionar Usuario) :include
 
 
 
@@ -45,8 +47,8 @@ Descripción: A cada usuario se le asignará una meta para poder reclamar su bon
 
 Usuario --> (Visualizar Meta) 
     
-(Visualizar Meta) -> (Meta Semanal) :extend
-(Visualizar Meta) -> (Meta Mesual) :extend
+(Meta Semanal) .> (Visualizar Meta) :extends
+(Meta Mensual) .> (Visualizar Meta) :extends
 
 
 @enduml
@@ -56,16 +58,16 @@ Descipcion: El usuario podrá enviar y visualizar los mensajes, se presentarán 
 
 ```plantuml
 @startuml
-Usuario --> (Procesar publicacion de emnsaje)
-(Procesar publicacion de emnsaje) -> (listar solicitudes pendientes) :extend
-Administrado --> (listar solicitudes pendientes)
+Usuario --> (Procesar publicacion de mensaje)
+(Procesar publicacion de mensaje) .> (listar solicitudes pendientes) :extends
+Administrador --> (listar solicitudes pendientes)
 @enduml
 ```
 * Caso de uso 5 - Consultar sitio de reciclaje.
 Descripcion: El usuario podrá consultar su sitio de reciclaje más cercano, al ingresar le pedirá al usuario su ubicación y le permitirá ver el eco-punto más cercano.
 ```plantuml
 @startuml
-Usuario --> (sonsultar Sitio de Reciclaje)
+Usuario --> (Consultar Sitio de Reciclaje)
 @enduml
 ```
 * Caso de uso 6 - Agregar Sponsor.
@@ -73,24 +75,49 @@ Descripcion: Un sponsor que no tiene que estar registrado en la aplicación, se 
 ```plantuml
 @startuml
 Usuario --> (Listar Solicitudes Pendientes)
-(Listar Solicitudes Pendientes)->(Agregar Sponsor) :include
-(Redactar Peticion) -> (Listar Solicitudes Pendientes):include
-Sponsor --> (Redactar Peticion)
+(Listar Solicitudes Pendientes).>(Agregar Sponsor) :include
+(Redactar Peticion) .> (Listar Solicitudes Pendientes):include
+Sponsor --> (Redactar Petición)
 @enduml
 ```
 
-#### Out of Scope (casos de uso No Soportados)
-Descripción...
-* Caso de uso 1
-* Caso de uso 2
-* ...
+#### Out of Scope (casos de uso No Soportados) - Requerimientos no funcionales
+
+* Performance del sistema.
+El software no tiene que tardar en la carga de las distintas pestañas y debe brindar un tiempo de respuesta de máximo 4 segundos.
+Garantizar un tiempo moderado al usuario en la navegación entre páginas, el tiempo de envío de los mensajes y la correcta carga de medios audiovisuales.
+
+
+* Adaptabilidad
+La página debe comportarse de manera correcta en dispositivos móviles, tablets y escritorios, brindando una correcta visualización de la información.
+El software debe garantizar el correcto funcionamiento en cada dispositivo, con todas las funcionalidades requeridas para esta aplicación, y que soporte las peticiones desde distintos dispositivos.
+
+
+* Seguridad de la información.
+El sistema garantizará a los usuarios seguridad en cuanto a la información que se solicite en la aplicación.
+El sistema brinda protección contra el acceso de datos e información no autorizados. También debe demostrar la acciones o eventos que han tenido cambios demostrando la identidad de un sujeto o un recurso.
+
+* Mantenimiento del sistema
+Permitir que el sistema sea modificado por el administrador de forma efectiva y eficiente sin introducir defectos o degradar el desempeño
+El sistema deberá de tener un manual de instalación y manual de usuario para facilitar los mantenimientos que serán realizados por el administrador. Debe brindar la capacidad para ser modificado a necesidades evolutivas, correctivas o perfectivas.
+
+* Interfaz intuitiva
+Letra clara.
+El sistema debe tener una interfaz de uso intuitiva y sencilla.
+Se incluirá la fabricación de una interfaz de usuario clara y fácil de usar, se utilizará un menú de navegación que se adapten a dispositivos móviles para una mayor facilidad de uso en estos dispositivos, con letra clara y entendible para el usuario de la aplicación.
+
+
+
+
+
+
+
 
 ---
 ## Arquitectura
 
 ### Diagramas
 poner diagramas de secuencia, uml, etc
-#Caso de uso Uno
 
 
 
@@ -99,7 +126,7 @@ poner diagramas de secuencia, uml, etc
 
 
 
-### uml: class diagram
+### UML: Diagram de Clases
 ```plantuml
 @startuml
 
@@ -187,6 +214,8 @@ poner diagramas de secuencia, uml, etc
 
 @enduml
 ```
+
+UML: Diagram de Clases (Herencia)
 
 ```plantuml
 @startuml
@@ -390,15 +419,15 @@ Poner diseño de entidades, Jsons, tablas, diagramas entidad relación, etc..
 
 ---
 ## Limitaciones
-Lista de limitaciones conocidas. Puede ser en formato de lista.
-Ej.
-* Llamadas del API tienen latencia X
-* No se soporta mas de X llamadas por segundo
+
+* Un administrador no puede tener más de 100 peticiones sin responder.
+* Una persona no puede tener más de 1 usuario.
+* En horas de matenimiento no se podra recibir bonificaciones.
+* Una persona no puede interactuar con la aplicacion sin antes realizar un "Logueo".
+* Capacidad de proceso muy pequeña o poca memoria, debido a que sera desplegado en un host gratuito (momentaneamente).
+* Nivel de servicio de muy baja calidad (muchas caídas y paradas de mantenimiento).
 ---
 ## Costo
-Descripción/Análisis de costos
-Ejemplo:
-"Considerando N usuarios diarios, M llamadas a X servicio/baseDatos/etc"
-* 1000 llamadas diarias a serverless functions. $XX.XX
-* 1000 read/write units diarias a X Database on-demand. $XX.XX
-Total: $xx.xx (al mes/dia/año)
+Esta aplicación se hará sin ánimo de lucro, no estamos buscando un beneficio financiero para los integrantes del proyecto, buscaremos un bien ambiental y la incentivación para nuevos proveedores. 
+Al tener el software y la base de datos funcional se buscará entes públicos o privados para el apoyo financiero del proyecto. Además, se indagará de apoyos para nuevos proyectos en el gobierno actual, como lo es el programa MinCiencias que busca el cumplimiento de los objetivos de desarrollo sostenible ayudando al crecimiento de proyectos de desarrollo comercial y prototipos funcionales.
+
