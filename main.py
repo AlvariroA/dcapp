@@ -31,6 +31,8 @@ class NombreLocalidad(Enum):
     
 #Pruebas
 ecopunto = {"id_ecopunto":"55", "direccion":"cra 45 B", "localidad":NombreLocalidad.chapi}
+mensajes = {"1":"Hola Como Estas", "2":"Esta es una prueba"}
+validarMeta = {"1":"Tu meta es la siguiente: 500 pts"}
 
 
 def directory_is_ready():
@@ -165,8 +167,10 @@ def Login(
 #ver meta
 @app.get("/{nombreusuario}/meta",status_code=status.HTTP_200_OK,tags=["Users"],
           summary="Presenta la meta de reciclaje de cada usuario")
-def meta():
-    return {"Bienvenido":"DCAPP"}
+def meta(
+    nombreusuario:str=Path(...)
+):
+    return validarMeta
 
 
 #ver lugar de reciclaje
@@ -201,3 +205,12 @@ def info_ecopunto(
 #agregar nuevo ecopunto
 
 #listar mensajes -tmb
+
+@app.get("/{codigo_administador}/buzon/",
+         status_code=status.HTTP_200_OK,
+         tags=["Admin"],
+         summary="Aqui se listan los mensajes de los usuario")
+def info_ecopunto(
+    codigo_administador:str = Path(...)
+):
+    return mensajes
