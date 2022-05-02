@@ -29,7 +29,8 @@ class NombreLocalidad(Enum):
     kenn="Kennedy"
     tunal="Tunal"
     
-    
+#Pruebas
+ecopunto = {"id_ecopunto":"55", "direccion":"cra 45 B", "localidad":NombreLocalidad.chapi}
 
 
 def directory_is_ready():
@@ -148,7 +149,7 @@ def new_person(person:Usuario=Body(...)):
           tags=["Users"],
           summary="Logeo de un usuario")
 def Login(
-#Inicio de Secion
+#Enviar datos
     username:str = Form(...),
     password:str = Form(...)
 ):
@@ -162,6 +163,11 @@ def Login(
 #ver usuario
 
 #ver meta
+@app.get("/{nombreusuario}/meta",status_code=status.HTTP_200_OK,tags=["Users"],
+          summary="Presenta la meta de reciclaje de cada usuario")
+def meta():
+    return {"Bienvenido":"DCAPP"}
+
 
 #ver lugar de reciclaje
 
@@ -182,7 +188,16 @@ def Login(
 #listar ecopuntos
 
 #info ecopunto
+@app.get("/{codigo_administador}/ecopuntos/{codigo_ecopunto}",
+         status_code=status.HTTP_200_OK,
+         tags=["Admin"],
+         summary="Presenta la información de un ecopunto")
+def info_ecopunto(
+    codigo_administador:str = Path(...),
+    codigo_ecopunto:str = Path(...)
+):
+    return ecopunto
 
 #agregar nuevo ecopunto
 
-#listar mensajes
+#listar mensajes -tmb
