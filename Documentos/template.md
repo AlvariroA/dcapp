@@ -188,6 +188,85 @@ poner diagramas de secuencia, uml, etc
 @enduml
 ```
 
+```plantuml
+@startuml
+
+    class Persona{
+        -codigo_usuario: Integer
+        -nombre: String
+        -estadoApp: Boolean
+        -email: String
+        -localidad: NombreLocalidad
+        -documento: Integer
+        -telefono: Integer
+        -clasificacion_documento: tipoDocumento
+        +darNombre(String)
+        +darFechaNacimiento(Date)
+        +darClasificacionDocumento(tipoDocumento)
+        +darEmail(String)
+        +cambiarEmail(): String
+        +cambiarClasificacionDocumento()
+        +darTelefono(Integer)
+        +darDocumento(Integer)
+
+    }
+
+    class Administrador  {
+        -codigo_administrador: Integer
+        -email_app: String
+        
+        +verificarBonificacion()
+        +darCodigo(Integer)
+        +darEmailApp(String)
+        +darDocumento(String)
+        +darTelefono(Integer)
+    }
+ class Sponsor{
+        -codigo_sponsor: Integer
+        -nombre_empresa:String
+        -email_app: String
+        
+        +registrarEmpresa()
+    }
+
+ class Usuario{
+        -codigo_usuario: Integer
+        -nombre:String
+        -email_app: String
+        
+        +verificarBonificacion()
+        +registarReciclaje()
+        +VisualizarMeta()
+        +enviarMensaje()
+        +consultarLugarReciclaje()
+    }
+ class UsuarioPremium{
+        -codigo_premium: Integer
+        -fecha_vencimiento: Date
+        
+        +actualizarPremium()
+    }
+
+Persona ^-- Administrador
+Persona ^-- Sponsor
+Persona ^-- Usuario
+Usuario ^-- UsuarioPremium
+
+    enum NombreLocalidad{
+        Chapinero
+        Kennedy
+        Tunal
+    }
+
+    enum TipoDocumento{
+        Cedula
+        Pasaporte
+        TarjetaIdentidad
+    }
+
+@enduml
+```
+
 ### Modelo de datos
 Poner diseño de entidades, Jsons, tablas, diagramas entidad relación, etc..
 
