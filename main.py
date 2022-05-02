@@ -2,6 +2,7 @@ from typing import Optional
 from pydantic import BaseModel, Field, SecretStr, EmailStr
 from enum import Enum
 import os
+import json
 
 from fastapi import FastAPI
 from fastapi import Body, Query, Path
@@ -24,13 +25,13 @@ class TipoDocumento(Enum):
     pa="Pasaporte"
     ti="Tarjeta de Identidad"
 
-class NombreLocalidad(Enum):
+class NombreLocalidad(Enum): 
     chapi="Chapinero"
     kenn="Kennedy"
     tunal="Tunal"
     
 #Pruebas
-ecopunto = {"id_ecopunto":"55", "direccion":"cra 45 B", "localidad":NombreLocalidad.chapi}
+ecopunto2 = {"id_ecopunto":"55", "direccion":"cra 45 B", "localidad":NombreLocalidad.chapi}
 mensajes = {"1":"Hola Como Estas", "2":"Esta es una prueba"}
 validarMeta = {"1":"Tu meta es la siguiente: 500 pts"}
 
@@ -125,9 +126,40 @@ class LoginOut(BaseModel):
     message : str=Field(
         default="Success"
     )        
+class reciclaje(Usuario):
+    name_reciclaje: str=Field(
+        ...,
+        min_length=3,
+        max_length=20
+    )
+    cantidad_r: int=Field(
+        ...,
+        gt=0,
+        example="001"
+    )
+    codigo_recicla: int=Field(
+        ...,
+        gt=0,
+        example="001"
+    )
+class puntos(Usuario):
+    cantidad_puntos: int=Field(
+        ...,
+        gt=0,
+        example="001"
+    )
+
+
     
-@app.get("/",status_code=status.HTTP_200_OK,tags=["Mensaje"],
-          summary="Logeo de un usuario")
+    
+    
+    
+    
+    
+    
+@app.get("/",status_code=status.HTTP_200_OK,
+         tags=["Inicio"],
+         summary="Inicio pagina DCAPP")
 def home():
     return {"Bienvenido":"DCAPP"}
 
@@ -163,10 +195,22 @@ def Login(
 ##USUARIOS
 
 #ver usuario
+@app.get('/{cod_usuario}/',
+         tags=["Users"],
+         summary="Inicio usuario")
+def get_post(cod_usuario: int):
+    for post in post:
+            if post["codigo_usuario"]== cod_usuario:
+                return post
+    raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Persona no registrada")
+
 
 #ver meta
-@app.get("/{nombreusuario}/meta",status_code=status.HTTP_200_OK,tags=["Users"],
-          summary="Presenta la meta de reciclaje de cada usuario")
+@app.get("/{nombreusuario}/meta",status_code=status.HTTP_200_OK,
+         tags=["Users"],
+         summary="Presenta la meta de reciclaje de cada usuario")
 def meta(
     nombreusuario:str=Path(...)
 ):
@@ -174,22 +218,92 @@ def meta(
 
 
 #ver lugar de reciclaje
+@app.get("/{nombreusuario}/lugarReciclaje/{codigo_lugar}",tags=["Users"],
+         summary="Presenta el lugar de reciclaje de cada usuario")
+def get_post(cod_lugar: int):
+    for post in post:
+            if post["codigo_lugar"] == cod_lugar:
+                return post
+    raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Punto no encontrado")
+
 
 #ver reciclaje
+@app.get(
+    path="/reciclaje/{cod_reciclaje}",
+    status_code=status.HTTP_404_NOT_FOUND,tags=["Users"],
+         summary="Presenta reciclaje de cada usuario")
+def home():
+    return  reciclaje
 
-#puntos 
 
 
+
+#puntos
+@app.get(
+    path="/{nombreusuario}/reciclaje/puntos",
+    status_code=status.HTTP_404_NOT_FOUND,tags=["Users"],
+         summary="Presenta los puntos de cada usuario"
+)
+def home():
+    return  puntos
+
+#Crear registro reciclaje
+@app.post(path="/{nombreusuario}/reciclaje/new",
+          status_code=status.HTTP_201_CREATED,
+          tags=["Users"],
+          summary="Registro de reciclaje")
+def new_reciclaje(reci:reciclaje=Body(...)):
+    return reci
 
 
 
 ##ADMINISTRADOR##
 
 #ver Administrador
-
+@app.get('/post/{cod_admi}',
+         tags=["Admin"],
+         summary="Muestra perfil de administrador")
+def get_post(cod_admi: int):
+    for post in post:
+            if post["codigo_administador"]== cod_admi:
+                return post
+    raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="administrador no registrada")
 #listar USUARIOS
 
+@app.get(
+    path="/{nombreadministrador}/usuarios",
+    status_code=status.HTTP_200_OK,
+    tags=["Admin"],
+    summary="Listar todos los usuarios"
+)
+def list_all_users():
+    with open("users.json","r+",encoding="utf-8") as file:
+        current=json.loads(file.read())
+    return current
+
+
 #listar ecopuntos
+@app.get(
+    path="/{codigo_administrador}/reciclaje",
+    status_code=status.HTTP_200_OK,
+    tags=["Admin"],
+    summary="Listar todos los reciclajes"
+)
+def list_all_reciclaje():
+    """
+    with open("reciclaje.json","r+",encoding="utf-8") as file:
+        current=json.reciclaje(file.read())
+    return current
+    """
+    def listar_reciclaje(
+    codigo_administrador:str = Path(...)
+):
+        return mensajes
+
 
 #info ecopunto
 @app.get("/{codigo_administador}/ecopuntos/{codigo_ecopunto}",
@@ -200,9 +314,23 @@ def info_ecopunto(
     codigo_administador:str = Path(...),
     codigo_ecopunto:str = Path(...)
 ):
-    return ecopunto
+    return ecopunto2
 
 #agregar nuevo ecopunto
+@app.post(path="/{codigo_administador}/ecopuntos/new",
+          status_code=status.HTTP_201_CREATED,
+          tags=["Ecopunto"],
+          summary="Registro de un nuevo ecopunto")
+def new_ecopunto(
+    codigo_administador: str=Path(...),
+    
+    id_ecopunto: str=Form(
+        ...,
+    ),
+    nombre_ecopunto: str=Form(...),
+    localidad: NombreLocalidad=Form(...)
+):
+    return ecopunto2
 
 #listar mensajes -tmb
 
@@ -210,7 +338,7 @@ def info_ecopunto(
          status_code=status.HTTP_200_OK,
          tags=["Admin"],
          summary="Aqui se listan los mensajes de los usuario")
-def info_ecopunto(
+def listar_mensajes(
     codigo_administador:str = Path(...)
 ):
     return mensajes
