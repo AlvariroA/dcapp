@@ -80,45 +80,89 @@ poner diagramas de secuencia, uml, etc
 ### uml: class diagram
 ```plantuml
 @startuml
-package "customer domain" #DDDDDD {
-    class Contact {
-        + email
-        + phone
+
+@startuml
+
+    class Usuario {
+        -codigo_usuario: Integer
+        -nombre: String
+        -estadoApp: Boolean
+        -email: String
+        -localidad: NombreLocalidad
+        -documento: Integer
+        -telefono: Integer
+        -clasificacion_documento: tipoDocumento
+        +consultarLugarReciclaje()
+        +registrarReciclaje()
+        +visualizarMeta()
+        +enviarMensaje()
+        +darEstadoApp(Boolean)
+        +darDocumento(Integer)
+        +darTelefono(Integer)
+        +cambiarEstado(): Boolean
+        +cambiarLocalidad(): NombreLocalidad
+        +darEmail(String)
     }
 
-    class Address {
-        + address1
-        + address2
-        + city
-        + region
-        + country
-        + postalCode
-        + organization
+    class Administrador  {
+        -nombre: String
+        -codigo_administrador: Integer
+        -nombre:String
+        -email_app: String
+        -clasificacion_documento: tipoDocumento
+        -documento: Integer
+        -telefono: Integer
+        
+        +verificarBonificacion()
+        +darCodigo(Integer)
+        +darEmailApp(String)
+        +darDocumento(String)
+        +darTelefono(Integer)
     }
 
-    note right of Address 
-        There are two types of 
-        addresses: billing and shipping
-    end note
-
-    class Customer {
+    class Puntos{
+        -cantidad: Integer
+        +darCantidad(Integer)
+        +cambiarCantidad(): Integer
     }
 
-    Customer *-- Contact
-    Customer *-- ShippingAddress
-    Customer *-- BillingAddress
-    Customer *--{ SalesOrder
-
-    class ShippingAddress <<Address>>
-    class BillingAddress <<Address>>
-    class SalesOrder {
-        + itemDescription
-        + itemPrice
-        + shippingCost
-        + trackingNumber
-        + shipDate
+    class Ecopunto{
+        -id_ecopunto: Integer 
+        -direccion: String
+        -localidad: NombreLocalidad
+        +consultarKgReciclaje(Reciclaje)
+        +darDireccion(String)
+        +darLocalidad(NombreLocalidad)
     }
-}
+
+    class Reciclaje{
+        -id_reciclaje: Integer
+        -localidad: NombreLocalidad
+        -cantidad: Integer
+        +cambiarCantidad(): Integer
+        +darIdReciclaje(Integer)
+        +darCantidad(Integer)
+        +darClasificacionReciclaje(TipoReciclaje)
+    }
+
+    Administrador "*" -- "0..1" Ecopunto : > gestiona
+    Usuario "1" -- "1..*" Ecopunto : > deposita
+    Usuario "0" -- "1..*" Puntos : > Tiene
+    Usuario "1..*" -- "*" Reciclaje : > Tiene
+    Ecopunto "*" -- "*" Reciclaje : > Tiene
+
+    enum NombreLocalidad{
+        Chapinero
+        Kennedy
+        Tunal
+    }
+
+    enum TipoDocumento{
+        Cedula
+        Pasaporte
+        TarjetaIdentidad
+    }
+
 @enduml
 ```
 
