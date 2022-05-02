@@ -51,11 +51,33 @@ Usuario --> (Visualizar Meta)
 
 @enduml
 ```
-* Caso de uso 4
+* Caso de uso 4 - Enviar mensaje al administrador.
+Descipcion: El usuario podrá enviar y visualizar los mensajes, se presentarán varias opciones para modificar el texto adjuntado. Se tendrá un apartado para enviar archivos adjuntos y aparecerá una lista con los archivos adjuntos y el tipo de archivo.
 
-* Caso de uso 5 
-
-* Caso de uso 6
+```plantuml
+@startuml
+Usuario --> (Procesar publicacion de emnsaje)
+(Procesar publicacion de emnsaje) -> (listar solicitudes pendientes) :extend
+Administrado --> (listar solicitudes pendientes)
+@enduml
+```
+* Caso de uso 5 - Consultar sitio de reciclaje.
+Descripcion: El usuario podrá consultar su sitio de reciclaje más cercano, al ingresar le pedirá al usuario su ubicación y le permitirá ver el eco-punto más cercano.
+```plantuml
+@startuml
+Usuario --> (sonsultar Sitio de Reciclaje)
+@enduml
+```
+* Caso de uso 6 - Agregar Sponsor.
+Descripcion: Un sponsor que no tiene que estar registrado en la aplicación, se podrá comunicar con un administrador para ofrecer sus servicios a los usuarios (Bonificaciones).
+```plantuml
+@startuml
+Usuario --> (Listar Solicitudes Pendientes)
+(Listar Solicitudes Pendientes)->(Agregar Sponsor) :include
+(Redactar Peticion) -> (Listar Solicitudes Pendientes):include
+Sponsor --> (Redactar Peticion)
+@enduml
+```
 
 #### Out of Scope (casos de uso No Soportados)
 Descripción...
