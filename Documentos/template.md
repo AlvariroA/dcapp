@@ -125,6 +125,124 @@ package "customer domain" #DDDDDD {
 ### Modelo de datos
 Poner diseño de entidades, Jsons, tablas, diagramas entidad relación, etc..
 
+* Json Persona
+```plantuml
+@startjson
+{
+   "nombre":"Alvaro",
+   "apellido":"Avila",
+   "tipo_documento": ["CC", "PAS","TI"],
+   "email":"example@hotmail.com",
+   "telefono":"33212564"
+}
+@endjson
+```
+* Json Usuario
+```plantuml
+@startjson
+{
+   "codigo_usuario":"U-001",
+   "nombre":"Alvaro",
+   "apellido":"Avila",
+   "edad":"22",
+   "email":"example@hotmail.com",
+   "tipo_documento": ["CC", "PAS","TI"],
+   "documento":"1216546578",
+   "telefono":"33212564",
+   "puntos":"456",
+   "estado_app":"True"
+}
+@endjson
+```
+
+* Json Administrador
+```plantuml
+@startjson
+{
+   "codigo_administrador":"A-001",
+   "nombre":"Camila",
+   "apellido":"Blanco",
+   "edad":"22",
+   "email_app":"example@dcapp.com",
+   "tipo_documento": ["CC", "PAS","TI"],
+   "documento":"1216546578",
+   "telefono":"33212564"
+}
+@endjson
+```
+
+* Json Sponsor
+
+```plantuml
+@startjson
+{
+   "codigo_sponsor":"S-001",
+   "nombre":"Daniel",
+   "apellido":"Gantiva",
+   "edad":"22",
+   "email":"example@rappi.com",
+   "tipo_documento": ["CC", "PAS","TI"],
+   "documento":"1216546578",
+   "telefono":"33212564",
+   "facha_vencimiento":"22/02/2022"
+}
+@endjson
+```
+
+* Json Reciclaje
+
+```plantuml
+@startjson
+{
+   "id_reciclaje":"R-123",
+   "localidad":["Kennedy","Chapinero","Tunal"],
+   "cantidad":"1000"
+}
+@endjson
+```
+* Json Ecoputo
+
+```plantuml
+@startjson
+{
+   "id_ecopunto":"E-100",
+   "localidad":["Kennedy","Chapinero","Tunal"]
+}
+@endjson
+
+```
+
+* Json CantidadPunto
+
+```plantuml
+@startjson
+{
+   "cantidad":"1100"
+}
+@endjson
+
+```
+* Json UsuarioPremium
+
+```plantuml
+@startjson
+{
+   "codigo_premium":"P-001",
+   "nombre":"Alvaro",
+   "apellido":"Avila",
+   "edad":"22",
+   "email":"example@hotmail.com",
+   "tipo_documento": ["CC", "PAS","TI"],
+   "documento":"1216546578",
+   "telefono":"33212564",
+   "puntos":"456",
+   "fecha_vemcimiento":"20/03/2023",
+   "estado_app":"True"
+}
+@endjson
+
+```
+
 ---
 ## Limitaciones
 Lista de limitaciones conocidas. Puede ser en formato de lista.
