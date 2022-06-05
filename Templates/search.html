@@ -1,0 +1,10 @@
+{% include 'head.html' %}
+{% include 'header.html' %}
+<div class="container">
+  {% if reciclaje %}
+    {% include 'reciclaje.html' %}
+  {% else %}
+    <h2>No encontrado</h2>
+  {% endif %}
+</div>
+{% include 'footer.html' %}

@@ -1,344 +1,101 @@
-from typing import Optional
-from pydantic import BaseModel, Field, SecretStr, EmailStr
-from enum import Enum
-import os
-import json
+# Python
+from typing import Optional, List, Dict
 
+# Pydantic
+from pydantic import BaseModel, Field
+
+#starlette
+from starlette.responses import HTMLResponse
+
+# FastAPI
 from fastapi import FastAPI
-from fastapi import Body, Query, Path
-from fastapi import status
-from fastapi import Form, Cookie, Header
-from fastapi import File, UploadFile
+from fastapi import Query, Path, HTTPException, status, Body, Request, Response, Form
+from fastapi.encoders import jsonable_encoder
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
 
-from fastapi.responses import FileResponse 
-from fastapi import HTTPException
 
+from database import reciclajes
+
+templates = Jinja2Templates(directory="templates")
+
+class Reciclaje(BaseModel):
+    usuario: Optional[str]
+    cantidad: Optional[str]
+    tipo: Optional [str] 
+    puntos: Optional[float]
+
+     
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-
-#Utilities
-
-
-###Enumaraciones
-class TipoDocumento(Enum):
-    cc="Cedula"
-    pa="Pasaporte"
-    ti="Tarjeta de Identidad"
-
-class NombreLocalidad(Enum): 
-    chapi="Chapinero"
-    kenn="Kennedy"
-    tunal="Tunal"
+##########################################
     
-#Pruebas
-ecopunto2 = {"id_ecopunto":"55", "direccion":"cra 45 B", "localidad":NombreLocalidad.chapi}
-mensajes = {"1":"Hola Como Estas", "2":"Esta es una prueba"}
-validarMeta = {"1":"Tu meta es la siguiente: 500 pts"}
+####Pagina Inicio    
+@app.get("/", response_class=RedirectResponse)
+async def root(request: Request):
+    return RedirectResponse(url="/reciclajes")
 
 
-def directory_is_ready():
-    os.makedirs(os.getcwd()+"/img",exist_ok=True) 
-    return os.getcwd()+"/img/"
+####Listar Reciclajes
+@app.get(path="/reciclajes",
+         response_class=HTMLResponse,
+         #response_model=List[Dict[str, Car]],
+         tags=["Get"],
+         summary="List all cars",
+         status_code=status.HTTP_200_OK
+         )
+def get_reciclajes(request: Request, number: Optional[str] = Query("10", max_length=3)):
+    response = []
+    for id, reciclaje in list(reciclajes.items())[:int(number)]:
+        response.append((id, reciclaje))
+    return templates.TemplateResponse("index.html", {"request":request, "reciclajes":response, "title":"Reciclajes"})
 
 
-###Models
 
-
-class PersonBase(BaseModel):
-    fist_name: str=Field(
-        ...,
-        min_length=2,
-        max_length=50,
-        example="Alvaro" 
-    )
-    last_name: str=Field(
-        ...,
-        min_length=2,
-        max_length=50,
-        example="Avila"
-    )
-    age: int=Field(
-        ...,
-        gt=0,
-        le=100,
-        example=22
-    )
-    email: EmailStr=Field(
-        ...,
-        example="alvarin@ucatolica.com"
-    )
-    tipo_documento: TipoDocumento=Field(
-        default = None,
-        example = TipoDocumento.cc
-    )
-    documento: str=Field(
-        ...,
-        min_length=8,
-        example = "xxxxxxxxx"
-    )
-    telefono:str=Field(...)
-
-
-class Administrador(PersonBase):
-    codigo_administador: int=Field(
-        ...,
-        gt=0,
-        example="001")
-    emailDcapp: EmailStr=Field(
-        ...,
-        example="admin@dcapp.com"
-    )
-    
-class Usuario(PersonBase):
-    codigo_usuario: int=Field(
-        ...,
-        gt=0,
-        example="U-001")
-    
-    puntos:int=Field(
-        ...,
-        gt=0,
-        example="100"
-    )
-    estado_app:bool=Field(default=False)
-    
-class Sponsor(PersonBase):
-    codigo_sponsor: int=Field(
-        ...,
-        gt=0,
-        example="001")
-    fecha_vencimiento: str=Field(
-        ...,
-        example="22/04/2022"
-    )
-    
-class LoginOut(BaseModel):
-    username: str=Form(
-        ...,
-        min_length=3,
-        max_length=20,
-        example="adavila59"
-    )
-    password: SecretStr=Form(
-        ...,
-        min_length=6,
-    )
-    message : str=Field(
-        default="Success"
-    )        
-class reciclaje(Usuario):
-    name_reciclaje: str=Field(
-        ...,
-        min_length=3,
-        max_length=20
-    )
-    cantidad_r: int=Field(
-        ...,
-        gt=0,
-        example="001"
-    )
-    codigo_recicla: int=Field(
-        ...,
-        gt=0,
-        example="001"
-    )
-class puntos(Usuario):
-    cantidad_puntos: int=Field(
-        ...,
-        gt=0,
-        example="001"
-    )
-
-
+@app.post("/search", response_class=RedirectResponse)
+def search_reciclaje(id: str = Form(...)):
+    return RedirectResponse("/reciclajes/" + id, status_code=status.HTTP_302_FOUND)
     
     
-    
-    
-    
-    
-    
-@app.get("/",status_code=status.HTTP_200_OK,
-         tags=["Inicio"],
-         summary="Inicio pagina DCAPP")
-def home():
-    return {"Bienvenido":"DCAPP"}
-
-
-######Metodos######
-
-#Crear nuevo usuario
-@app.post(path="/registro/new",
-          status_code=status.HTTP_201_CREATED,
-          tags=["Users"],
-          summary="Logeo de un usuario")
-def new_person(person:Usuario=Body(...)):
-    return person
-
-
-
-#Login
-@app.post(path="/login", 
-          status_code=status.HTTP_200_OK, 
-          response_model=LoginOut,
-          tags=["Users"],
-          summary="Logeo de un usuario")
-def Login(
-#Enviar datos
-    username:str = Form(...),
-    password:str = Form(...)
-):
-    return LoginOut(username=username, password=password)
-
-
-#Help
-
-##USUARIOS
-
-#ver usuario
-@app.get('/{cod_usuario}/',
-         tags=["Users"],
-         summary="Inicio usuario")
-def get_post(cod_usuario: int):
-    for post in post:
-            if post["codigo_usuario"]== cod_usuario:
-                return post
-    raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Persona no registrada")
-
-
-#ver meta
-@app.get("/{nombreusuario}/meta",status_code=status.HTTP_200_OK,
-         tags=["Users"],
-         summary="Presenta la meta de reciclaje de cada usuario")
-def meta(
-    nombreusuario:str=Path(...)
-):
-    return validarMeta
-
-
-#ver lugar de reciclaje
-@app.get("/{nombreusuario}/lugarReciclaje/{codigo_lugar}",tags=["Users"],
-         summary="Presenta el lugar de reciclaje de cada usuario")
-def get_post(cod_lugar: int):
-    for post in post:
-            if post["codigo_lugar"] == cod_lugar:
-                return post
-    raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Punto no encontrado")
-
-
-#ver reciclaje
-@app.get(
-    path="/reciclaje/{cod_reciclaje}",
-    status_code=status.HTTP_404_NOT_FOUND,tags=["Users"],
-         summary="Presenta reciclaje de cada usuario")
-def home():
-    return  reciclaje
-
-
-
-
-#puntos
-@app.get(
-    path="/{nombreusuario}/reciclaje/puntos",
-    status_code=status.HTTP_404_NOT_FOUND,tags=["Users"],
-         summary="Presenta los puntos de cada usuario"
-)
-def home():
-    return  puntos
-
-#Crear registro reciclaje
-@app.post(path="/{nombreusuario}/reciclaje/new",
-          status_code=status.HTTP_201_CREATED,
-          tags=["Users"],
-          summary="Registro de reciclaje")
-def new_reciclaje(reci:reciclaje=Body(...)):
-    return reci
-
-
-
-##ADMINISTRADOR##
-
-#ver Administrador
-@app.get('/post/{cod_admi}',
-         tags=["Admin"],
-         summary="Muestra perfil de administrador")
-def get_post(cod_admi: int):
-    for post in post:
-            if post["codigo_administador"]== cod_admi:
-                return post
-    raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="administrador no registrada")
-#listar USUARIOS
-
-@app.get(
-    path="/{nombreadministrador}/usuarios",
-    status_code=status.HTTP_200_OK,
-    tags=["Admin"],
-    summary="Listar todos los usuarios"
-)
-def list_all_users():
-    with open("users.json","r+",encoding="utf-8") as file:
-        current=json.loads(file.read())
-    return current
-
-
-#listar ecopuntos
-@app.get(
-    path="/{codigo_administrador}/reciclaje",
-    status_code=status.HTTP_200_OK,
-    tags=["Admin"],
-    summary="Listar todos los reciclajes"
-)
-def list_all_reciclaje():
-    """
-    with open("reciclaje.json","r+",encoding="utf-8") as file:
-        current=json.reciclaje(file.read())
-    return current
-    """
-    def listar_reciclaje(
-    codigo_administrador:str = Path(...)
-):
-        return mensajes
-
-
-#info ecopunto
-@app.get("/{codigo_administador}/ecopuntos/{codigo_ecopunto}",
+####Consular por id
+@app.get(path="/reciclajes/{id}",
+         response_class=HTMLResponse,
          status_code=status.HTTP_200_OK,
-         tags=["Admin"],
-         summary="Presenta la información de un ecopunto")
-def info_ecopunto(
-    codigo_administador:str = Path(...),
-    codigo_ecopunto:str = Path(...)
-):
-    return ecopunto2
+         tags=["Reciclaje"],
+         summary="Find car by Id")
+def get_car_by_id(request: Request, id: int = Path(..., ge=0, lt=1000)):
+    reciclaje = reciclajes.get(id)
+    response = templates.TemplateResponse("search.html", {"request": request, "reciclaje": reciclaje, "id":id, "title": "Reciclaje"})
+    if not reciclaje:
+        response.status_code=status.HTTP_404_NOT_FOUND
+    return response
 
-#agregar nuevo ecopunto
-@app.post(path="/{codigo_administador}/ecopuntos/new",
+####Registro de un nuevo reciclaje
+@app.get("/create", response_class=HTMLResponse)
+def create_registro(request:Request):
+    return templates.TemplateResponse("create.html", {"request":request, "title": "Create Reciclaje"})
+
+
+
+@app.post(path="/reciclajes",
           status_code=status.HTTP_201_CREATED,
-          tags=["Ecopunto"],
-          summary="Registro de un nuevo ecopunto")
-def new_ecopunto(
-    codigo_administador: str=Path(...),
-    
-    id_ecopunto: str=Form(
-        ...,
-    ),
-    nombre_ecopunto: str=Form(...),
-    localidad: NombreLocalidad=Form(...)
-):
-    return ecopunto2
-
-#listar mensajes -tmb
-
-@app.get("/{codigo_administador}/buzon/",
-         status_code=status.HTTP_200_OK,
-         tags=["Admin"],
-         summary="Aqui se listan los mensajes de los usuario")
-def listar_mensajes(
-    codigo_administador:str = Path(...)
-):
-    return mensajes
+          tags=["Cars"],
+          summary="Add a car")
+def add_registro(
+    usuario: Optional[str] = Form(...),
+    cantidad: Optional[str] = Form(...),
+    tipo: Optional [str] = Form(...),
+    puntos: Optional[float] = Form(...),
+    min_id: Optional[int]= Body(0)):
+    body_reciclajes= [Reciclaje(usuario=usuario, cantidad=cantidad, tipo=tipo, puntos=puntos)]
+    if len(body_reciclajes) < 1:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No cars to add")
+    min_id = len(reciclajes.values())+min_id
+    for reciclaje in body_reciclajes:
+        while reciclajes.get(min_id):
+            min_id+=1
+        reciclajes[min_id]=reciclaje
+        min_id+=1
+    return RedirectResponse(url="/reciclajes", status_code=status.HTTP_302_FOUND)
