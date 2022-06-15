@@ -83,7 +83,9 @@ def root(request: Request):
 
 ####Autentificación
 
-
+@app.get("/home")
+def root(request: Request):
+    return templates.TemplateResponse("usuario/home.html", {"request": request, "title": "Home"})
 
 
 

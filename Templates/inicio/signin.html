@@ -11,7 +11,7 @@
 
 <body>
     <article class="login-box">
-        <img class="logo" src="img/opcion2.png" alt="Logo de DCAPP">
+        <img class="logo" src="{{url_for('static', path='/img/opcion2.png')}}" alt="Logo de DCAPP">
         <h1>Sign In</h1>
         <form>
             <div class="container-form">
@@ -39,7 +39,7 @@
                 posible que te enviemos notificaciones por SMS que podrás desactivar cuando quieras.</p>
             <input class ="button" type="submit"  value="Registrame" />
         </form>
-        <a href="login.html">Volver.</a>
+        <a href="/login">Volver.</a>
     </article>
 
 </body>
