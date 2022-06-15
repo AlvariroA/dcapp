@@ -1,5 +1,5 @@
-{%include 'head.html'%}
-{% include 'header.html' %}
+{%include 'include/head.html'%}
+{% include 'include/header.html' %}
 <div class="container-fluid">
     {% for id, reciclaje in reciclajes %}
         <div class="row justify-content-center" style="text-align: center">
@@ -9,4 +9,4 @@
         </div>
     {% endfor %}
 </div>
-{% include 'footer.html' %}
+{% include 'include/footer.html' %}
