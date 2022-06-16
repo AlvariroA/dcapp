@@ -1,24 +1,172 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Prueba Index</title>
-    <link rel="stylesheet" href="main.css">
-</head>
-
-<body>
-    <header class="header content">
-        <div class="header-image">
-            <img src="{{url_for('static', path='/img/opcion2.png')}}">
-        </div>
-        <div class="header-overlay"></div>
-        <div class="header-content">
-            <h1>DCAPP</h1>
-            <p>Proyecto Realizado por: Alvaro Avila Castro david_avilac</p>
-            <a href="/signin" class="btn">Inicio Sesion</a>
-            <a href="/login" class="btn">Registro</a>
-        </div>
-    </header>
-</body>
-
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>DCAPP - Inicio</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{{ url_for('static', path='/cssinicio/styles.css') }}"rel="stylesheet" >
+    </head>
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-light bg-light static-top">
+            <div class="container">
+                <a class="navbar-brand" href="/">DCAPP</a>
+                <a class="btn btn-primary" href="/signin">Sign Up</a>
+            </div>
+        </nav>
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container position-relative">
+                <div class="row justify-content-center">
+                    <div class="col-xl-6">
+                        <div class="text-center text-white">
+                            <h1 class="mb-5">Bienvenido a DCApp!</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Icons Grid-->
+        <section class="features-icons bg-light text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                            <div class="features-icons-icon d-flex"><i class="bi-window m-auto text-primary"></i></div>
+                            <h3>Usuarios Activos</h3>
+                            <p class="lead mb-0">{{usuarios}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                            <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
+                            <h3>Cantidad de reciclaje</h3>
+                            <p class="lead mb-0">{{cantidad}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                            <div class="features-icons-icon d-flex"><i class="bi-terminal m-auto text-primary"></i></div>
+                            <h3>Proyectos</h3>
+                            <p class="lead mb-0">Algo Mal!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Image Showcases-->
+        <section class="showcase">
+            <div class="container-fluid p-0">
+                <div class="row g-0">
+                    <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('assets/img/bg-showcase-1.jpg')"></div>
+                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                        <h2>Problema</h2>
+                        <p class="lead mb-0">“En Bogotá existe una deficiente participación de los ciudadanos para separar en la fuente, una tarea indispensable para que sea posible recuperar mayores cantidades de residuos. La administración debe hacer esfuerzos para mejorar la información disponible pues la meta en el Plan de Desarrollo es lograr reducir 30% los residuos dispuestos en el relleno sanitario, pero los ciudadanos pueden empezar por tener bolsas diferenciadas en casa y hacer un esfuerzo por poner en la blanca material que se pueda recuperar y en la negra lo que debe ir a la caneca ( Bogotá Cómo Vamos, 2020)”.
+                        </p>
+                    </div>
+                </div>
+                <div class="row g-0">
+                    <div class="col-lg-6 text-white showcase-img" style="background-image: url('assets/img/bg-showcase-2.jpg')"></div>
+                    <div class="col-lg-6 my-auto showcase-text">
+                        <h2></h2>
+                        <p class="lead mb-0">Este proyecto nace frente a la problemática actual en Bogotá "la falta de información confiable sobre la cantidad de desechos electrónicos que no son reutilizados",  los datos que se tienen son dados a conocer por fuentes poco confiables, las cuales se basan en entrevistas o aproximando datos y en muchos casos brindado información errónea o muy aproximada.</p>
+                    </div>
+                </div>
+                <div class="row g-0">
+                    <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('assets/img/bg-showcase-3.jpg')"></div>
+                    <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+                        <h2>Costo</h2>
+                        <p class="lead mb-0">Esta aplicación se hará sin ánimo de lucro, no estamos buscando un beneficio financiero para los integrantes del proyecto, buscaremos un bien ambiental y la incentivación para nuevos proveedores. 
+                            Al tener el software y la base de datos funcional se buscará entes públicos o privados para el apoyo financiero del proyecto. Además, se indagará de apoyos para nuevos proyectos en el gobierno actual, como lo es el programa MinCiencias que busca el cumplimiento de los objetivos de desarrollo sostenible ayudando al crecimiento de proyectos de desarrollo comercial y prototipos funcionales.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="testimonials text-center bg-light">
+            <div class="container">
+                <h2 class="mb-5">Desarrolladores del Proyecto</h2>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                            <img class="img-fluid rounded-circle mb-3" src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="..." />
+                            <h5>Alvaro Avila</h5>
+                            <p class="font-weight-light mb-0">"This is fantastic! Thanks so much guys!"</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                            <img class="img-fluid rounded-circle mb-3" src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="..." />
+                            <h5>Daniel Gantiva</h5>
+                            <p class="font-weight-light mb-0">"Bootstrap is amazing. I've been using it to create lots of super nice landing pages."</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                            <img class="img-fluid rounded-circle mb-3" src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="..." />
+                            <h5>Camila Blanco</h5>
+                            <p class="font-weight-light mb-0">"Thanks so much for making these free resources available to us!"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Call to Action-->
+        <section class="call-to-action text-white text-center" id="signup">
+            <div class="container position-relative">
+                <div class="row justify-content-center">
+                    <div class="col-xl-6">
+                        <h2 class="mb-4">Registrate Ahora !</h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Footer-->
+        <footer class="footer bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
+                        <ul class="list-inline mb-2">
+                            <li class="list-inline-item"><a href="#!">About</a></li>
+                            <li class="list-inline-item">⋅</li>
+                            <li class="list-inline-item"><a href="#!">Contact</a></li>
+                            <li class="list-inline-item">⋅</li>
+                            <li class="list-inline-item"><a href="#!">Terms of Use</a></li>
+                            <li class="list-inline-item">⋅</li>
+                            <li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
+                        </ul>
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2022. All Rights Reserved.</p>
+                    </div>
+                    <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item me-4">
+                                <a href="#!"><i class="bi-facebook fs-3"></i></a>
+                            </li>
+                            <li class="list-inline-item me-4">
+                                <a href="#!"><i class="bi-twitter fs-3"></i></a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!"><i class="bi-instagram fs-3"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- * *                               SB Forms JS                               * *-->
+        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    </body>
 </html>

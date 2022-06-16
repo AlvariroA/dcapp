@@ -1,0 +1,25 @@
+
+{% include 'include/header.html' %}
+
+<div class = "container">
+  <h2 class="text-center mt-4">Perfil Usuario</h2>
+  <div class="card mb-4">
+    <div class="card-header">
+      <h2 class= "text-center">Nombre: {{usuario['username']}}</h2>
+    </div>
+    <div class="card-body">
+        <div class = "row no-gutters">
+          <div class="col-md-4">
+                <img src="https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg" height="300px" class="card-img-top" alt="...">
+            </div>
+            <div class="col-md-8 content-center">
+                <h5 class="card-title text-center">Información del Usuario</h5>
+                <p class="card-text text-center"><strong>Telefono:</strong> {{usuario['telefono']}}</p>
+                <p class="card-text text-center"><strong>Correo:</strong> {{usuario['email']}}</p>
+                <p class="card-text text-center"><strong>Documento:</strong> {{usuario['documento']}}</p>
+            </div>
+        </div> 
+    </div>
+  </div>
+</div>
+{% include 'include/footer.html' %}
