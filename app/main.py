@@ -1,12 +1,11 @@
 import os
 
-from fastapi import APIRouter
 from fastapi import FastAPI
-from fastapi import Response, Request, Depends, status, Form, File, UploadFile
+from fastapi import Request, Depends, status, Form, File, UploadFile
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.encoders import jsonable_encoder
-from fastapi.security import OAuth2PasswordBearer
+
 
 #starlette
 from starlette.responses import HTMLResponse
@@ -24,7 +23,6 @@ from sqlalchemy.orm import Session
 
 ###TOKEN
 from dotenv import load_dotenv
-from routes.auth import auth_routes
 from passlib.context import CryptContext
 from app.functions_jwt import write_token
 
@@ -249,7 +247,7 @@ def get_reciclajes(request: Request, db: Session = Depends(db.get_db)):
     response = []
     for reciclaje in result2:
         response.append((reciclaje))
-    return templates.TemplateResponse("index.html",
+    return templates.TemplateResponse("reciclajes.html",
                                       {"request": request, "reciclajes": response, "title": "Lista Reciclajes"})
 
 ####### Usuarios 
