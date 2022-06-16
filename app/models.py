@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 from .database import Base 
-
+from sqlalchemy.orm import relationship
 
 class User(Base):
     __tablename__ = "user"
@@ -15,6 +15,7 @@ class Reciclaje(Base):
     
     id = Column(String, primary_key=True, index=True)
     usuario = Column(String, nullable=False)
-    cantidad = Column(String, nullable=False)
     tipo = Column(String, nullable=False)
+    cantidad = Column(Integer, nullable=False)
     puntos = Column(Integer, nullable=False)
+    imagen = Column(String)

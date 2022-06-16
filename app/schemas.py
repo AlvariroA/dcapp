@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-
+from fastapi import UploadFile
 
 class User(BaseModel):
     id:Optional[int]
@@ -23,9 +23,10 @@ class Respuesta(BaseModel):
 ###Registro Prueba###
 class ReciclajeBase(BaseModel):
     usuario: str
-    cantidad: str
+    cantidad: int
     tipo: str
     puntos: int
+    imagen: str
            
 class Reciclaje(ReciclajeBase):
     id: str

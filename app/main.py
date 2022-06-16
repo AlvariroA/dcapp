@@ -1,5 +1,7 @@
+import os
+
 from fastapi import FastAPI
-from fastapi import Response, Request, Depends, status, Form
+from fastapi import Response, Request, Depends, status, Form, File, UploadFile
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.encoders import jsonable_encoder
@@ -9,25 +11,30 @@ from fastapi.encoders import jsonable_encoder
 from starlette.responses import HTMLResponse
 from starlette.responses import RedirectResponse
 
-
-from . import models, schemas, crud
-
-from . import database as db
-from .database import SessionLocal, engine
+##DataBase
+import app.models as models
+import app.schemas as schemas
+import app.database as db
+import app.crud as crud
 
 from typing import List 
 
 from sqlalchemy.orm import Session
 
 
-
-models.Base.metadata.create_all(bind=engine)
-
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/img", StaticFiles(directory="img"), name="img")
 
-###Conexuion con la base de datos
+
+def directory_is_ready():
+    os.makedirs(os.getcwd()+"/img", exist_ok=True)
+    return os.getcwd()+"/img/"
+
+
+
+###Conexion con la base de datos
 
         
 
@@ -81,13 +88,65 @@ def root(request: Request):
     return templates.TemplateResponse("inicio/login.html", {"request": request, "title": "Home"})
 
 
-####Autentificación
-
 @app.get("/home")
 def root(request: Request):
     return templates.TemplateResponse("usuario/home.html", {"request": request, "title": "Home"})
 
 
+
+
+####Reciclaje
+@app.get("/reciclaje")
+def get_register(request: Request):
+    return templates.TemplateResponse("create.html",{"request":request, "title": "Registro"})
+
+
+@app.get("/create", response_class=HTMLResponse)
+def create_registro(request:Request):
+    return templates.TemplateResponse("create.html", {"request":request, "title": "Create Reciclaje"})
+
+@app.post("/reciclaje")
+async def register(request: Request,
+             usuario:str=Form(...),
+             cantidad:int=Form(...),
+             tipo:str=Form(...),
+             imagen: UploadFile = File(...),
+             db: Session=Depends(db.get_db)):
+    dir = directory_is_ready()
+    print(dir)
+    with open(dir+imagen.filename, "wb") as myimage:
+        content = await imagen.read()
+        myimage.write(content)
+        myimage.close()
+    puntos = 100
+    crud.create_reciclaje(db=db, reciclaje=schemas.ReciclajeCreate(
+        usuario=usuario,
+        cantidad=cantidad,
+        tipo=tipo,
+        puntos = puntos,
+        imagen=imagen.filename
+    ))
+    responseReciclaje = RedirectResponse("/reciclaje", status_code=status.HTTP_302_FOUND)
+    return responseReciclaje
+
+
+@app.get(path="/reciclajes",
+         response_class=HTMLResponse,
+         response_model=schemas.Reciclaje,
+         tags=["Get"],
+         summary="List all cars",
+         status_code=status.HTTP_200_OK
+         )
+def get_reciclajes(request: Request, db: Session = Depends(db.get_db)):
+    result = db.query(models.Reciclaje).all()
+    result2 = jsonable_encoder(result)
+    response = []
+    for reciclaje in result2:
+        response.append((reciclaje))
+    return templates.TemplateResponse("index.html",
+                                      {"request": request, "reciclajes": response, "title": "Lista Reciclajes"})
+
+####### Usuarios 
 
 
 
@@ -97,37 +156,10 @@ def get_users(db:Session=Depends(db.get_db), user:schemas.User=Depends(db.get_db
     return jsonable_encoder(result)
 
 
-@app.get("/register")
-def get_register(request: Request):
-    return templates.TemplateResponse("create.html",{"request":request,
-                                                        "title": "Registro"})
     
 
 
 
-@app.get("/reciclajes")
-def get_reciclajes(db:Session=Depends(db.get_db)):
-    result=crud.get_reciclajes(db=db)
-    return jsonable_encoder(result)
 
-@app.get("/create", response_class=HTMLResponse)
-def create_registro(request:Request):
-    return templates.TemplateResponse("create.html", {"request":request, "title": "Create Reciclaje"})
-
-@app.post("/reciclajes")
-def register(request: Request,
-             usuario:str=Form(...),
-             cantidad:str=Form(...),
-             tipo:str=Form(...),
-             puntos:int=Form(...),
-             db: Session=Depends(db.get_db)):
-    crud.create_reciclaje(db=db, reciclaje=schemas.ReciclajeCreate(
-        usuario=usuario,
-        cantidad=cantidad,
-        tipo=tipo,
-        puntos=puntos
-    ))
-    responseReciclaje = RedirectResponse("/reciclajes", status_code=status.HTTP_302_FOUND)
-    return responseReciclaje
 
     

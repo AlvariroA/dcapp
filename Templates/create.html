@@ -1,24 +1,41 @@
-{% include 'include/head.html' %}
+
 {% include 'include/header.html' %}
-<div class="container" style="margin-top: 1em">
-    <form action="/reciclajes" method="POST">
-        <div class="mb-3">
-            <label for="usuario" class="form-label">Usuario</label>
+<div class="card col-md-8 mt-4 mx-auto ">
+    <div class="card-header">
+        <h3 class = "text-center">DCAPP</h3>
+   </div>
+   <div class="card-body">
+    <form action="/reciclaje" method="POST" enctype  = "multipart/form-data">
+        <div class="form-group">
+            <label for="formGroupExampleInput">Usuario</label>
             <input type="text" name="usuario" id="usuario" class="form-control">
+
+            <label for="exampleFormControlFile1">Cantidad de Reciduo en Kg</label>
+            <select name="tipo" id="tipo" class="form-control">
+                <option selected value="DEFAULT">Seleccione uno</option>
+                <option>Baterias</option>
+                <option>Televisores</option>
+                <option>Bombillas</option>
+            </select>
         </div>
-        <div class="mb-3">
-            <label for="cantidad" class="form-label">Cantidad</label>
-            <input type="text" name="cantidad" id="cantidad" class="form-control">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="formGroupExampleInput">Cantidad de Reciduo en Kg</label>
+                <input type="text" name="cantidad" id="cantidad" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="exampleFormControlFile1">Example file input</label>
+                <input type="file" class="form-control-file" name = "imagen" id="imagen">
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="tipo" class="form-label">Tipo</label>
-            <input type="text" name="tipo" id="tipo" class="form-control">
+        <div class="row">
+            <div class="col-md-3 offset-md-9">
+                <button type="submit" class="btn btn-success">Confirmar Registro</button>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="puntos" class="form-label">Puntos</label>
-            <input type="text" name="puntos" id="puntos" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        
     </form>
+   </div>
+    
 </div>
 {% include 'include/footer.html' %}

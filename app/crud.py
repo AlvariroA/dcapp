@@ -23,7 +23,8 @@ def create_reciclaje(db:Session, reciclaje: schemas.ReciclajeCreate):
         usuario=reciclaje.usuario,
         cantidad=reciclaje.cantidad,
         tipo=reciclaje.tipo,
-        puntos=int(reciclaje.puntos)
+        puntos=reciclaje.puntos,
+        imagen=reciclaje.imagen
     )
     db.add(db_reciclaje)
     db.commit()

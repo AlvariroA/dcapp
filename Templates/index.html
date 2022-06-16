@@ -1,12 +1,12 @@
-{%include 'include/head.html'%}
 {% include 'include/header.html' %}
-<div class="container-fluid">
-    {% for id, reciclaje in reciclajes %}
-        <div class="row justify-content-center" style="text-align: center">
-            <div class="col col-sm 6">
-                {% include 'reciclaje.html' %}
-            </div>
+<h1 class="text-center mt-4">Lista Reciclaje</h1>
+<div class="container mt-4 ">
+  <div class="row mt-2 mb-3">
+        <div class="row justify-content-center">
+            {% for reciclaje in reciclajes %}
+            {% include 'reciclaje.html' %}
+            {% endfor %}
         </div>
-    {% endfor %}
+
 </div>
 {% include 'include/footer.html' %}
