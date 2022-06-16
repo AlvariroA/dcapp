@@ -17,7 +17,7 @@ import app.models as models
 import app.schemas as schemas
 import app.database as db
 import app.crud as crud
-
+from app.database import engine
 from typing import List 
 
 from sqlalchemy.orm import Session
@@ -110,9 +110,58 @@ def root(request: Request):
 def root(request: Request):
     return templates.TemplateResponse("inicio/signin.html", {"request": request, "title": "Home"})
 
+
 @app.get("/login")
 def root(request: Request):
     return templates.TemplateResponse("inicio/login.html", {"request": request, "title": "Home"})
+
+
+
+@app.post("/signin")
+def register(request: Request,
+             username:str=Form(...),
+             edad:str=Form(...),
+             telefono:str=Form(...),
+             email:str=Form(...),
+             documento:str=Form(...),
+             fecha_nac:str=Form(...),
+             password:str=Form(...),
+             db: Session=Depends(db.get_db)):
+    hashed_password=get_hashed_password(password)
+    invalid=False
+
+    if crud.get_user_by_username(db=db, username=username):
+        invalid = True
+    if crud.get_user_by_email(db=db, email=email):
+        invalid = True
+    if not invalid:
+        crud.create_user(db=db, user=schemas.UserUpdate(
+            username=username,
+            edad=edad,
+            telefono=telefono,
+            email=email,
+            documento=documento,
+            fecha_nac=fecha_nac,
+            hashed_password=hashed_password
+        ))
+        resposnse = RedirectResponse("/login", status_code=status.HTTP_302_FOUND)
+        return resposnse
+    else:
+        return templates.TemplateResponse("signin.html",
+                                          {"request":request,
+                                           "title":"Register",
+                                           "invalid": invalid},
+                                          status_code=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -180,7 +229,7 @@ def get_users(db:Session=Depends(db.get_db), user:schemas.User=Depends(db.get_db
     result=crud.get_users(db=db)
     return jsonable_encoder(result)
 
-
+models.Base.metadata.create_all(engine)
     
 
 

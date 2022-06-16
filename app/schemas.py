@@ -1,23 +1,31 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
-from fastapi import UploadFile
 
-class User(BaseModel):
-    id:Optional[int]
-    name:str
-    email: EmailStr
-    
+class UserBase(BaseModel):
+    username: str
+    edad: str
+    telefono:str
+    documento:str
+    fecha_nac:str
+    email:str
+    hashed_password:str
+
+class User(UserBase):
+    id: str
+
     class Config:
         orm_mode = True
-        
-class UserUpdate(BaseModel):
-    name:str
-    
-    class Config:
-        orm_mode = True
+
+class UserUpdate(UserBase):
+    pass
+
         
 class Respuesta(BaseModel):
     mensaje:str
+    
+    
+    
+    
     
     
 ###Registro Prueba###

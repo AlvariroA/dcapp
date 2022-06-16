@@ -6,9 +6,13 @@ class User(Base):
     __tablename__ = "user"
 
     id = Column(String, primary_key=True, index=True, unique=True, nullable=False)
-    name = Column(String, index=True)
+    username = Column(String, index=True)
+    edad = Column(String)
+    telefono = Column(String, index=True, unique=True, nullable=False)
+    documento = Column(String, index=True, unique=True, nullable=False)
+    fecha_nac = Column(String, nullable=False)
     email = Column(String, index=True, unique=True, nullable=False)
-    
+    hashed_password = Column(String, index=True, unique=True, nullable=False)
 
 class Reciclaje(Base):
     __tablename__ = "reciclaje"

@@ -13,27 +13,30 @@
     <article class="login-box">
         <img class="logo" src="{{url_for('static', path='/img/opcion2.png')}}" alt="Logo de DCAPP">
         <h1>Sign In</h1>
-        <form>
+        <form action="/signin" method="POST">
             <div class="container-form">
                 <section class="uno">
-                    <input type="text" placeholder="Enter Username">
+                    <input type="text" placeholder="Enter Username" id = "username" name = "username" required>
 
-                    <input type="text" placeholder="Ingresa tu apellido">
+                    <input type="text" placeholder="Ingresa tu edad" id = "edad" name = "edad" required>
 
-                    <input type="text" placeholder="Ingresa tu edad">
+                    <input type="text" placeholder="Ingresa tu Telefono" id = "telefono" name = "telefono" required>
 
-                    <input type="text" placeholder="Ingresa tu Telefono">
+                    <input type="password" placeholder="Confirma tu Contraseña" id = "password" name = "password" required>
 
                 </section>
                 <section class="dos">
-                    <input type="text" placeholder="Tipo Documento">
-                    <input type="text" placeholder="Digita un email">
+                    
+                    <input type="text" placeholder="Digita un email" id = "email" name = "email" required>
 
-                    <input type="text" placeholder="Digita tu Documento">
+                    <input type="text" placeholder="Fecha de nacimiento" id = "fecha_nac" name = "fecha_nac" required>
 
-                    <input type="password" placeholder="Digite su contraseña">
+                    <input type="text" placeholder="Digita tu Documento" id = "documento" name = "documento" required>
+
+                    <input type="password" placeholder="Digite su contraseña" id = "conf_pass" name = "conf_pass" required>
 
                 </section>
+
             </div>
             <p>Al hacer clic en Registrarte, aceptas las Condiciones, la Política de datos y la Política de cookies. Es
                 posible que te enviemos notificaciones por SMS que podrás desactivar cuando quieras.</p>

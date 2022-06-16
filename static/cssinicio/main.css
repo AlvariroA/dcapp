@@ -68,6 +68,25 @@ body {
     -o-border-radius: 5px;
 }
 
+.login-box input[type="date"],
+.login-box input[type="number"]{
+    display: block;
+    padding: 9px;
+    width: 18rem;
+    outline: none;
+    background-color: #9191911f;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    font-size: 19px;
+    backdrop-filter: blur(15px);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
 .login-box form input[type="text"]:focus {
     box-shadow: 0 0 16px 1px rgba(0, 0, 0, 0.2);
     animation: wobble 0.3s ease-in;
