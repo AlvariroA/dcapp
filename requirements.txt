@@ -9,3 +9,5 @@ python-multipart==0.0.5
 sniffio==1.2.0
 SQLAlchemy==1.4.37
 uvicorn==0.17.6
+pyjwt
+python-dotenv
