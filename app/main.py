@@ -29,21 +29,15 @@ from passlib.context import CryptContext
 from app.functions_jwt import write_token
 
 
-###routes
-from routes.dcapp_users import dcapp_users
-from routes.auth import auth_routes
-
 pwd_ctx= CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 app = FastAPI()
-users = APIRouter()
+
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/img", StaticFiles(directory="img"), name="img")
 
 
-app.include_router(auth_routes, prefix="/api")
-app.include_router(dcapp_users, prefix ="/api")
 load_dotenv()
 
 def get_hashed_password(plain_password):
