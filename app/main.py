@@ -1,5 +1,6 @@
 import os
 
+from fastapi import APIRouter
 from fastapi import FastAPI
 from fastapi import Response, Request, Depends, status, Form, File, UploadFile
 from fastapi.templating import Jinja2Templates
@@ -21,11 +22,35 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
+###TOKEN
+from dotenv import load_dotenv
+from routes.auth import auth_routes
+from passlib.context import CryptContext
+
+###routes
+from routes.dcapp_users import dcapp_users
+from routes.auth import auth_routes
+
+pwd_ctx= CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 app = FastAPI()
+users = APIRouter()
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/img", StaticFiles(directory="img"), name="img")
+
+
+app.include_router(auth_routes, prefix="/api")
+app.include_router(dcapp_users, prefix ="/api")
+load_dotenv()
+
+def get_hashed_password(plain_password):
+    return pwd_ctx.hash(plain_password)
+
+def verify_password(plain_password, hashed_password):
+    return pwd_ctx.verify(plain_password, hashed_password)
+
+
 
 
 def directory_is_ready():
@@ -37,7 +62,9 @@ def directory_is_ready():
 ###Conexion con la base de datos
 
         
-
+"""@dcapp_users.post("/home")
+def root(request: Request):
+    return templates.TemplateResponse("usuario/home.html", {"request": request, "title": "Home"})"""
 
 
 
@@ -88,9 +115,7 @@ def root(request: Request):
     return templates.TemplateResponse("inicio/login.html", {"request": request, "title": "Home"})
 
 
-@app.get("/home")
-def root(request: Request):
-    return templates.TemplateResponse("usuario/home.html", {"request": request, "title": "Home"})
+
 
 
 

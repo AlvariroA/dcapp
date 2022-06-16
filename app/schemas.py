@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 from fastapi import UploadFile
 
 class User(BaseModel):
     id:Optional[int]
     name:str
-    email:str
+    email: EmailStr
     
     class Config:
         orm_mode = True
